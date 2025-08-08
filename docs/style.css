@@ -1,0 +1,167 @@
+ได้ครับ เพื่อปรับให้โปรแกรมทำงานแบบครึ่งจอบนและล่าง ผมได้แก้ไขโค้ด style.css ใหม่ เพื่อจัดวางองค์ประกอบให้เหมาะสมกับจอภาพในทุกขนาดครับ
+
+โค้ด style.css (ฉบับปรับปรุง)
+นำโค้ด CSS นี้ไปแทนที่ไฟล์เดิมได้เลยครับ ผมได้ปรับการใช้ Flexbox และเพิ่ม Media Query เพื่อให้ layout ดูดีทั้งบนคอมพิวเตอร์และมือถือ 💻📱.
+
+CSS
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
+    margin: 0;
+}
+
+.main-container {
+    display: flex;
+    flex-direction: column; /* จัดเรียงส่วนควบคุมและส่วนแสดงผลในแนวตั้ง */
+    min-height: 100vh;
+}
+
+.controls-panel {
+    flex: 1; /* ให้แผงควบคุมใช้พื้นที่ครึ่งจอ */
+    background-color: #fff;
+    padding: 30px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    max-height: 50vh; /* กำหนดความสูงสูงสุดให้เป็นครึ่งหนึ่งของจอ */
+    overflow-y: auto; /* เพิ่ม scrollbar ถ้าเนื้อหาเกิน */
+}
+
+.preview-panel {
+    flex: 1; /* ให้แผงแสดงผลใช้พื้นที่ครึ่งจอ */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    background-color: #f0f2f5;
+}
+
+h1, h3 {
+    text-align: center;
+    color: #333;
+    font-size: 2em;
+}
+
+.form-container {
+    margin-top: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #555;
+    font-size: 1.1em;
+}
+
+input[type="text"], input[type="number"], input[list], select, textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 1.1em;
+}
+
+.options-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.options-group > div {
+    flex: 1;
+}
+
+.options-group label {
+    margin-bottom: 5px;
+}
+
+.options-group input {
+    margin-bottom: 0;
+}
+
+button {
+    width: 100%;
+    padding: 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.envelope {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    box-sizing: border-box;
+    line-height: 2;
+    font-family: Arial;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.envelope.A4 { width: 21cm; height: 29.7cm; }
+.envelope.C5 { width: 16.2cm; height: 22.9cm; }
+.envelope.DL { width: 11cm; height: 22cm; }
+.envelope.Custom18-5x13 { width: 18.5cm; height: 13cm; }
+
+/* โค้ดสำหรับมือถือและแท็บเล็ต */
+@media (max-width: 768px) {
+    .controls-panel {
+        max-height: none;
+        height: auto;
+    }
+    
+    .preview-panel {
+        padding: 20px;
+    }
+    
+    .envelope {
+        width: 90vw;
+        height: auto;
+    }
+}
+
+/* โค้ดสำหรับสั่งพิมพ์ */
+@media print {
+    .main-container { display: none; }
+    #envelopes-container { display: block; }
+    
+    .envelope {
+        border: none;
+        box-shadow: none;
+        page-break-after: always;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+    .envelope:last-child { page-break-after: avoid; }
+    
+    @page {
+        margin: 0;
+        size: auto;
+    }
+    body {
+        margin: 0;
+    }
+}
