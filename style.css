@@ -14,7 +14,7 @@ body {
     background-color: #fff;
     padding: 30px;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    max-width: 450px; /* ลดขนาดแผงควบคุมลงเล็กน้อย */
+    max-width: 450px;
 }
 
 .preview-panel {
@@ -30,7 +30,7 @@ body {
 h1, h3 {
     text-align: center;
     color: #333;
-    font-size: 2em; /* เพิ่มขนาดหัวข้อ */
+    font-size: 2em;
 }
 
 .form-container {
@@ -39,27 +39,27 @@ h1, h3 {
 
 label {
     display: block;
-    margin-bottom: 8px; /* เพิ่มระยะห่างด้านล่าง */
+    margin-bottom: 8px;
     font-weight: bold;
     color: #555;
-    font-size: 1.1em; /* เพิ่มขนาดตัวอักษรของ label */
+    font-size: 1.1em;
 }
 
 input[type="text"], input[type="number"], input[list], select, textarea {
     width: 100%;
-    padding: 12px; /* เพิ่ม padding */
-    margin-bottom: 20px; /* เพิ่มระยะห่างด้านล่าง */
+    padding: 12px;
+    margin-bottom: 20px;
     border: 1px solid #ccc;
-    border-radius: 8px; /* ปรับขอบโค้งให้โค้งขึ้น */
+    border-radius: 8px;
     box-sizing: border-box;
-    font-size: 1.1em; /* เพิ่มขนาดตัวอักษรของ input */
+    font-size: 1.1em;
 }
 
 .options-group {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 15px; /* เพิ่มระยะห่างระหว่างองค์ประกอบ */
+    gap: 15px;
     margin-bottom: 20px;
 }
 
@@ -77,7 +77,7 @@ input[type="text"], input[type="number"], input[list], select, textarea {
 
 button {
     width: 100%;
-    padding: 15px; /* เพิ่มขนาดปุ่ม */
+    padding: 15px;
     background-color: #007bff;
     color: white;
     border: none;
@@ -92,7 +92,6 @@ button:hover {
     background-color: #0056b3;
 }
 
-/* ส่วนของซองการ์ดที่ใช้สำหรับการแสดงตัวอย่างและพิมพ์ */
 .envelope {
     background-color: #fff;
     border: 1px solid #ccc;
@@ -113,6 +112,42 @@ button:hover {
 .envelope.DL { width: 11cm; height: 22cm; }
 .envelope.Custom18-5x13 { width: 18.5cm; height: 13cm; }
 
+
+/* โค้ดสำหรับมือถือและแท็บเล็ต */
+@media (max-width: 768px) {
+    .main-container {
+        flex-direction: column; /* เปลี่ยนการจัดเรียงเป็นแนวตั้ง */
+    }
+
+    .controls-panel {
+        max-width: none; /* ใช้ความกว้างเต็มหน้าจอ */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    
+    .preview-panel {
+        padding: 20px;
+        min-height: 50vh; /* กำหนดความสูงขั้นต่ำให้เห็นชัดเจน */
+    }
+    
+    h1 {
+        font-size: 1.8em;
+    }
+    
+    .envelope {
+        width: 90vw; /* ปรับขนาดซองให้เต็มความกว้างหน้าจอมือถือ */
+        height: auto; /* ปรับความสูงตามเนื้อหา */
+    }
+    
+    .options-group {
+        flex-direction: column; /* จัดเรียงตัวเลือกเป็นแนวตั้ง */
+        gap: 0;
+    }
+    
+    .options-group > div {
+        width: 100%;
+        margin-bottom: 15px;
+    }
+}
 
 /* โค้ดสำหรับสั่งพิมพ์ */
 @media print {
