@@ -61,69 +61,71 @@ document.getElementById('generateBtn').addEventListener('click', function() {
     const printDoc = printFrame.contentWindow.document;
 
     // กำหนดขนาดซองให้ถูกต้องเมื่อนำไปใช้ในหน้าจอสั่งพิมพ์
-    let envelopeStyle = '';
+    let envelopeStyles = '';
     switch (envelopeSize) {
         case 'A4':
-            envelopeStyle = 'width: 21cm; height: 29.7cm;';
+            envelopeStyles = 'width: 21cm; height: 29.7cm;';
             break;
         case 'C5':
-            envelopeStyle = 'width: 16.2cm; height: 22.9cm;';
+            envelopeStyles = 'width: 16.2cm; height: 22.9cm;';
             break;
         case 'DL':
-            envelopeStyle = 'width: 11cm; height: 22cm;';
+            envelopeStyles = 'width: 11cm; height: 22cm;';
             break;
         case 'Custom18-5x13':
-            envelopeStyle = 'width: 18.5cm; height: 13cm;';
+            envelopeStyles = 'width: 18.5cm; height: 13cm;';
             break;
     }
 
-    let printContentHTML = `
+    // สร้าง CSS สำหรับการพิมพ์โดยเฉพาะ
+    let printCSS = `
+        @page { margin: 0; }
+        body { margin: 0; }
+        .envelope {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            page-break-after: always;
+            box-sizing: border-box;
+            line-height: 2;
+            padding: 20px;
+            font-size: ${fontSize}px;
+            color: ${fontColor};
+            font-family: '${fontFamily}';
+            ${envelopeStyles}
+        }
+        .envelope:last-child { page-break-after: avoid; }
+        .envelope p { margin: 0; }
+        .first-line-text { font-size: ${parseInt(fontSize) * 0.75}px; margin-bottom: 10px; }
+    `;
+
+    // สร้างเนื้อหา HTML สำหรับการพิมพ์
+    let printContentHTML = '';
+    namesArray.forEach(name => {
+        let contentHTML = `<div class="envelope">`;
+        if (firstLineText) {
+            contentHTML += `<p class="first-line-text">${firstLineText}</p>`;
+        }
+        contentHTML += `<p>${name}</p></div>`;
+        printContentHTML += contentHTML;
+    });
+
+    // ใส่เนื้อหาและ CSS ลงใน iframe
+    printDoc.open();
+    printDoc.write(`
         <!DOCTYPE html>
         <html>
         <head>
             <title>Print</title>
-            <style>
-                @media print {
-                    @page { margin: 0; size: auto; }
-                    body { margin: 0; }
-                    .envelope {
-                        display: flex;
-                        flex-direction: column;
-                        justify-content: center; /* จัดให้อยู่กึ่งกลางในแนวตั้ง */
-                        align-items: center;    /* จัดให้อยู่กึ่งกลางในแนวนอน */
-                        text-align: center;
-                        page-break-after: always;
-                        ${envelopeStyle}
-                        line-height: 2;
-                        padding: 0;
-                        box-sizing: border-box;
-                        font-size: ${fontSize}px;
-                        color: ${fontColor};
-                        font-family: '${fontFamily}';
-                    }
-                    .envelope:last-child { page-break-after: avoid; }
-                    .envelope p { margin: 0; }
-                    .first-line-text { font-size: ${parseInt(fontSize) * 0.75}px; margin-bottom: 10px; }
-                }
-            </style>
+            <style>${printCSS}</style>
         </head>
         <body>
-    `;
-
-    namesArray.forEach(name => {
-        const envelopeDiv = `<div class="envelope">`;
-        let contentHTML = '';
-        if (firstLineText) {
-            contentHTML += `<p class="first-line-text">${firstLineText}</p>`;
-        }
-        contentHTML += `<p>${name}</p>`;
-        printContentHTML += `${envelopeDiv}${contentHTML}</div>`;
-    });
-
-    printContentHTML += `</body></html>`;
-    
-    printDoc.open();
-    printDoc.write(printContentHTML);
+            ${printContentHTML}
+        </body>
+        </html>
+    `);
     printDoc.close();
 
     printFrame.contentWindow.focus();
