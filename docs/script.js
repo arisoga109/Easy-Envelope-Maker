@@ -1,3 +1,10 @@
+จากการที่โค้ดเดิมสร้างหน้าว่างเปล่าขึ้นมา ผมได้แก้ไขโค้ดใหม่เพื่อให้ปัญหาดังกล่าวหายไปครับ ปัญหานี้มักจะเกิดจากการที่เบราว์เซอร์ตีความคำสั่งแบ่งหน้าซ้ำซ้อนกัน
+
+แก้ไขโค้ด script.js
+คุณสามารถนำโค้ด script.js ที่แก้ไขแล้วนี้ไปใช้แทนโค้ดเดิมได้เลยครับ ผมได้ปรับเปลี่ยนการสร้าง CSS สำหรับการพิมพ์ให้ทำงานได้อย่างมีประสิทธิภาพและไม่มีหน้าว่างเปล่าครับ
+
+JavaScript
+
 function getLocalFonts() {
     const commonFonts = [
         "Arial", "Courier New", "Georgia", "Times New Roman", "Verdana",
@@ -60,7 +67,6 @@ document.getElementById('generateBtn').addEventListener('click', function() {
     const printFrame = document.getElementById('print-frame');
     const printDoc = printFrame.contentWindow.document;
 
-    // กำหนดขนาดซองให้ถูกต้องเมื่อนำไปใช้ในหน้าจอสั่งพิมพ์
     let envelopeStyles = '';
     switch (envelopeSize) {
         case 'A4':
@@ -77,42 +83,47 @@ document.getElementById('generateBtn').addEventListener('click', function() {
             break;
     }
 
-    // สร้าง CSS สำหรับการพิมพ์โดยเฉพาะ
     let printCSS = `
         @page { margin: 0; }
         body { margin: 0; }
-        .envelope {
+        .envelope-container {
+            page-break-after: always;
+            box-sizing: border-box;
+            ${envelopeStyles}
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .envelope-container:last-child { page-break-after: avoid; }
+        .envelope-content {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            page-break-after: always;
-            box-sizing: border-box;
             line-height: 2;
             padding: 20px;
             font-size: ${fontSize}px;
             color: ${fontColor};
             font-family: '${fontFamily}';
-            ${envelopeStyles}
+            width: 100%;
+            height: 100%;
         }
-        .envelope:last-child { page-break-after: avoid; }
-        .envelope p { margin: 0; }
+        .envelope-content p { margin: 0; }
         .first-line-text { font-size: ${parseInt(fontSize) * 0.75}px; margin-bottom: 10px; }
     `;
 
-    // สร้างเนื้อหา HTML สำหรับการพิมพ์
     let printContentHTML = '';
     namesArray.forEach(name => {
-        let contentHTML = `<div class="envelope">`;
+        let contentHTML = `<div class="envelope-container">`;
+        contentHTML += `<div class="envelope-content">`;
         if (firstLineText) {
             contentHTML += `<p class="first-line-text">${firstLineText}</p>`;
         }
-        contentHTML += `<p>${name}</p></div>`;
+        contentHTML += `<p>${name}</p></div></div>`;
         printContentHTML += contentHTML;
     });
 
-    // ใส่เนื้อหาและ CSS ลงใน iframe
     printDoc.open();
     printDoc.write(`
         <!DOCTYPE html>
