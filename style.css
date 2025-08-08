@@ -1,0 +1,143 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
+    margin: 0;
+}
+
+.main-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+.controls-panel {
+    flex: 1;
+    background-color: #fff;
+    padding: 30px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    max-width: 450px; /* ลดขนาดแผงควบคุมลงเล็กน้อย */
+}
+
+.preview-panel {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    background-color: #f0f2f5;
+}
+
+h1, h3 {
+    text-align: center;
+    color: #333;
+    font-size: 2em; /* เพิ่มขนาดหัวข้อ */
+}
+
+.form-container {
+    margin-top: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px; /* เพิ่มระยะห่างด้านล่าง */
+    font-weight: bold;
+    color: #555;
+    font-size: 1.1em; /* เพิ่มขนาดตัวอักษรของ label */
+}
+
+input[type="text"], input[type="number"], input[list], select, textarea {
+    width: 100%;
+    padding: 12px; /* เพิ่ม padding */
+    margin-bottom: 20px; /* เพิ่มระยะห่างด้านล่าง */
+    border: 1px solid #ccc;
+    border-radius: 8px; /* ปรับขอบโค้งให้โค้งขึ้น */
+    box-sizing: border-box;
+    font-size: 1.1em; /* เพิ่มขนาดตัวอักษรของ input */
+}
+
+.options-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px; /* เพิ่มระยะห่างระหว่างองค์ประกอบ */
+    margin-bottom: 20px;
+}
+
+.options-group > div {
+    flex: 1;
+}
+
+.options-group label {
+    margin-bottom: 5px;
+}
+
+.options-group input {
+    margin-bottom: 0;
+}
+
+button {
+    width: 100%;
+    padding: 15px; /* เพิ่มขนาดปุ่ม */
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* ส่วนของซองการ์ดที่ใช้สำหรับการแสดงตัวอย่างและพิมพ์ */
+.envelope {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    box-sizing: border-box;
+    line-height: 2;
+    font-family: Arial;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.envelope.A4 { width: 21cm; height: 29.7cm; }
+.envelope.C5 { width: 16.2cm; height: 22.9cm; }
+.envelope.DL { width: 11cm; height: 22cm; }
+.envelope.Custom18-5x13 { width: 18.5cm; height: 13cm; }
+
+
+/* โค้ดสำหรับสั่งพิมพ์ */
+@media print {
+    .main-container { display: none; }
+    #envelopes-container { display: block; }
+    
+    .envelope {
+        border: none;
+        box-shadow: none;
+        page-break-after: always;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+    .envelope:last-child { page-break-after: avoid; }
+    
+    @page {
+        margin: 0;
+        size: auto;
+    }
+    body {
+        margin: 0;
+    }
+}

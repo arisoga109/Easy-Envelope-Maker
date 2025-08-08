@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>โปรแกรมพิมพ์ซองหลายรายชื่อ</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="main-container">
+        <div class="controls-panel">
+            <h1>กรุณาใส่ข้อมูลเพื่อสร้างและพิมพ์ซองการ์ด</h1>
+            <div class="form-container">
+                <label for="first-line" class="full-width">ข้อความบรรทัดแรก:</label>
+                <input type="text" id="first-line" placeholder="เช่น เรียนเชิญ" class="full-width">
+                
+                <label for="names-list" class="full-width">รายชื่อผู้รับ (พิมพ์ชื่อละบรรทัด):</label>
+		<label for="names-list" class="full-width">(แนะนำให้ copy รายชื่อที่เรียงแล้วจาก word มาวาง):</label>
+                <textarea id="names-list" placeholder="ตัวอย่าง:
+ชื่อ-นามสกุล 1
+ชื่อ-นามสกุล 2
+ชื่อ-นามสกุล 3" class="full-width"></textarea>
+                
+                <label for="envelope-size" class="full-width">ขนาดซองการ์ด:</label>
+                <select id="envelope-size" class="full-width">
+                    <option value="Custom18-5x13">ซอง 18.5 x 13 ซม.</option>
+		    <option value="A4">ซอง A4 (21 x 29.7 ซม.)</option>
+                    <option value="C5">ซอง C5 (16.2 x 22.9 ซม.)</option>
+                    <option value="DL">ซอง DL (11 x 22 ซม.)</option>
+                    
+                </select>
+                
+                <div class="options-group spaced-out">
+                    <div>
+                        <label for="font-size">ขนาดตัวอักษร:</label>
+                        <input type="number" id="font-size" value="32" min="10" max="60">
+                    </div>
+                    <div>
+                        <label for="font-color">สีตัวอักษร:</label>
+                        <input type="color" id="font-color" value="#000000">
+                    </div>
+                </div>
+                
+                <label for="font-family" class="full-width">ฟอนต์:</label>
+                <input list="font-list" id="font-family" placeholder="เลือกหรือพิมพ์ชื่อฟอนต์" class="full-width">
+                <datalist id="font-list"></datalist>
+
+                <button id="generateBtn" class="full-width">สร้างและพิมพ์ซองการ์ด</button>
+            </div>
+        </div>
+        
+        <div class="preview-panel">
+            <h3>ตัวอย่างซองการ์ด</h3>
+            <div id="live-preview" class="envelope A4">
+                <p id="preview-first-line" class="first-line-text"></p>
+                <p id="preview-name"></p>
+            </div>
+	        <h3>by จ.ส.ต.วสันต์ ขุมทอง</h3>
+        </div>
+    </div>
+    
+    <iframe id="print-frame" style="display:none;"></iframe>
+
+    <script src="script.js"></script>
+</body>
+</html>
