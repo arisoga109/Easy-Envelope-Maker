@@ -77,7 +77,7 @@ document.getElementById('generateBtn').addEventListener('click', function() {
     }
 
     let printCSS = `
-        @page { margin: 0; size: auto; }
+        @page { margin: 0; }
         body { margin: 0; }
         .envelope {
             display: flex;
@@ -85,7 +85,6 @@ document.getElementById('generateBtn').addEventListener('click', function() {
             justify-content: center;
             align-items: center;
             text-align: center;
-            page-break-after: always;
             box-sizing: border-box;
             ${envelopeStyles}
             line-height: 2;
@@ -94,18 +93,22 @@ document.getElementById('generateBtn').addEventListener('click', function() {
             color: ${fontColor};
             font-family: '${fontFamily}';
         }
-        .envelope:last-child { page-break-after: avoid; }
         .envelope p { margin: 0; }
         .first-line-text { font-size: ${parseInt(fontSize) * 0.75}px; margin-bottom: 10px; }
     `;
 
     let printContentHTML = '';
-    namesArray.forEach(name => {
+    namesArray.forEach((name, index) => {
         let contentHTML = `<div class="envelope">`;
         if (firstLineText) {
             contentHTML += `<p class="first-line-text">${firstLineText}</p>`;
         }
         contentHTML += `<p>${name}</p></div>`;
+
+        // เพิ่มคำสั่งแบ่งหน้าสำหรับทุกซองยกเว้นซองสุดท้าย
+        if (index < namesArray.length - 1) {
+            contentHTML += `<div style="page-break-after: always;"></div>`;
+        }
         printContentHTML += contentHTML;
     });
 
