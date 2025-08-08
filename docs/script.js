@@ -1,7 +1,7 @@
-จากการที่โค้ดเดิมสร้างหน้าว่างเปล่าขึ้นมา ผมได้แก้ไขโค้ดใหม่เพื่อให้ปัญหาดังกล่าวหายไปครับ ปัญหานี้มักจะเกิดจากการที่เบราว์เซอร์ตีความคำสั่งแบ่งหน้าซ้ำซ้อนกัน
+หน้าว่างที่คั่นทุกหน้าเกิดจากโค้ด page-break-after: always; ที่กำหนดไว้บนองค์ประกอบหลักมากเกินไป ทำให้เบราว์เซอร์สร้างหน้าว่างขึ้นมาเพื่อแบ่งหน้าครับ ผมได้ปรับโค้ด script.js เพื่อแก้ไขปัญหานี้แล้วครับ
 
-แก้ไขโค้ด script.js
-คุณสามารถนำโค้ด script.js ที่แก้ไขแล้วนี้ไปใช้แทนโค้ดเดิมได้เลยครับ ผมได้ปรับเปลี่ยนการสร้าง CSS สำหรับการพิมพ์ให้ทำงานได้อย่างมีประสิทธิภาพและไม่มีหน้าว่างเปล่าครับ
+โค้ด script.js (ฉบับแก้ไข)
+คุณสามารถนำโค้ดนี้ไปแทนโค้ดเดิมได้เลยครับ ผมได้ปรับโครงสร้าง CSS ที่ใช้ในการพิมพ์ให้ง่ายและมีประสิทธิภาพมากขึ้น
 
 JavaScript
 
@@ -84,43 +84,35 @@ document.getElementById('generateBtn').addEventListener('click', function() {
     }
 
     let printCSS = `
-        @page { margin: 0; }
+        @page { margin: 0; size: auto; }
         body { margin: 0; }
-        .envelope-container {
-            page-break-after: always;
-            box-sizing: border-box;
-            ${envelopeStyles}
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .envelope-container:last-child { page-break-after: avoid; }
-        .envelope-content {
+        .envelope {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
+            page-break-after: always;
+            box-sizing: border-box;
+            ${envelopeStyles}
             line-height: 2;
             padding: 20px;
             font-size: ${fontSize}px;
             color: ${fontColor};
             font-family: '${fontFamily}';
-            width: 100%;
-            height: 100%;
         }
-        .envelope-content p { margin: 0; }
+        .envelope:last-child { page-break-after: avoid; }
+        .envelope p { margin: 0; }
         .first-line-text { font-size: ${parseInt(fontSize) * 0.75}px; margin-bottom: 10px; }
     `;
 
     let printContentHTML = '';
     namesArray.forEach(name => {
-        let contentHTML = `<div class="envelope-container">`;
-        contentHTML += `<div class="envelope-content">`;
+        let contentHTML = `<div class="envelope">`;
         if (firstLineText) {
             contentHTML += `<p class="first-line-text">${firstLineText}</p>`;
         }
-        contentHTML += `<p>${name}</p></div></div>`;
+        contentHTML += `<p>${name}</p></div>`;
         printContentHTML += contentHTML;
     });
 
